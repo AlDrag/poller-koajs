@@ -1,0 +1,20 @@
+{
+  "name": "poller",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "dependencies": {
+    "knex": "^0.13.0",
+    "koa": "^2.3.0",
+    "koa-bodyparser": "^4.2.0",
+    "koa-router": "^7.2.1",
+    "pg": "^7.3.0"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "start": "node --use-strict ./app/app.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC"
+}
