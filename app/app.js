@@ -8,6 +8,7 @@ app.use(BodyParser());
 
 const Polls = require('./db/queries/polls');
 const Options = require('./db/queries/options');
+const Votes = require('./db/queries/votes');
 
 api.get('/polls', async (ctx, next) => {
   try {
@@ -30,12 +31,12 @@ api.get('/polls', async (ctx, next) => {
 
 api.post('/polls', async (ctx, next) => {
   try {
-    const poll = await Polls.create(ctx.request.body);
-    if (poll.length) {
+    const polls = await Polls.create(ctx.request.body);
+    if (polls.length) {
       ctx.status = 201;
       ctx.body = {
         status: 'success',
-        data: poll
+        data: polls
       };
     } else {
       ctx.status = 400;
@@ -82,6 +83,53 @@ api.post('/polls/:poll_id/options', async (ctx, next) => {
       ctx.body = {
         status: 'success',
         data: option
+      };
+    } else {
+      ctx.status = 400;
+      ctx.body = {
+        status: 'error',
+        message: 'Something went wrong.'
+      };
+    }
+  } catch (err) {
+    ctx.status = 400;
+    ctx.body = {
+      status: 'error',
+      message: err.message || 'Sorry, an error has occurred.'
+    };
+  }
+});
+
+api.get('/polls/:poll_id/votes', async (ctx, next) => {
+  try {
+    const votes = await Votes.getByPollID(ctx.params.poll_id);
+    if (votes.length) {
+      ctx.status = 200;
+      ctx.body = {
+        status: 'success',
+        data: votes
+      }
+    }
+  } catch (err) {
+    ctx.status = 400;
+    ctx.body = {
+      status: 'error',
+      message: 'Something went wrong.'
+    };
+  }
+});
+
+api.post('/polls/:poll_id/options/:option_id/votes', async (ctx, next) => {
+  try {
+    const pollID = ctx.params.poll_id;
+    const optionID = ctx.params.option_id;
+    const newVote = Object.assign({}, ctx.request.body, {poll_id: pollID, option_id: optionID});
+    const votes = await Votes.create(newVote);
+    if (votes.length) {
+      ctx.status = 201;
+      ctx.body = {
+        status: 'success',
+        data: votes
       };
     } else {
       ctx.status = 400;
