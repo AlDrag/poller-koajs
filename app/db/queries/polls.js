@@ -2,13 +2,13 @@ const knex = require('../connection');
 
 function get() {
     return knex('polls')
-    .returning('*');
+        .returning('*');
 }
 
 function create(poll) {
     return knex('polls')
-    .insert(poll)
-    .returning('*');
+        .insert(poll)
+        .returning('*');
 }
 
 module.exports = {

@@ -7,6 +7,7 @@ const api = Router();
 app.use(BodyParser());
 
 const Polls = require('./db/queries/polls');
+const Options = require('./db/queries/options');
 
 api.get('/polls', async (ctx, next) => {
   try {
@@ -27,7 +28,7 @@ api.get('/polls', async (ctx, next) => {
   }
 });
 
-api.post('/polls/new', async (ctx, next) => {
+api.post('/polls', async (ctx, next) => {
   try {
     const poll = await Polls.create(ctx.request.body);
     if (poll.length) {
@@ -35,6 +36,52 @@ api.post('/polls/new', async (ctx, next) => {
       ctx.body = {
         status: 'success',
         data: poll
+      };
+    } else {
+      ctx.status = 400;
+      ctx.body = {
+        status: 'error',
+        message: 'Something went wrong.'
+      };
+    }
+  } catch (err) {
+    ctx.status = 400;
+    ctx.body = {
+      status: 'error',
+      message: err.message || 'Sorry, an error has occurred.'
+    };
+  }
+});
+
+api.get('/polls/:poll_id/options', async (ctx, next) => {
+  try {
+    const options = await Options.get(ctx.params.poll_id);
+    if (options.length) {
+      ctx.status = 200;
+      ctx.body = {
+        status: 'success',
+        data: options
+      }
+    }
+  } catch (err) {
+    ctx.status = 400;
+    ctx.body = {
+      status: 'error',
+      message: 'Something went wrong.'
+    };
+  }
+});
+
+api.post('/polls/:poll_id/options', async (ctx, next) => {
+  try {
+    const pollID = ctx.params.poll_id;
+    const newOption = Object.assign({}, ctx.request.body, {poll_id: pollID});
+    const option = await Options.create(newOption);
+    if (option.length) {
+      ctx.status = 201;
+      ctx.body = {
+        status: 'success',
+        data: option
       };
     } else {
       ctx.status = 400;

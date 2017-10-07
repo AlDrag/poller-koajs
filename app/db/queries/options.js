@@ -1,11 +1,18 @@
 const knex = require('../connection');
 
-function addOption(option) {
+function get(pollID) {
     return knex('options')
-    .insert(option)
-    .returning('*');
-  }
+        .where('poll_id', pollID)
+        .returning('*');
+}
+
+function create(option) {
+    return knex('options')
+        .insert(option)
+        .returning('*');
+}
 
 module.exports = {
-    addOption
+    get,
+    create
 }
