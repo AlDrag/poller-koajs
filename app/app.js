@@ -1,10 +1,12 @@
 const Koa = require('koa');
 const BodyParser = require('koa-bodyparser');
 const Router = require('koa-router');
+const Cors = require('@koa/cors');
 
 const app = new Koa();
 const api = Router();
 app.use(BodyParser());
+app.use(Cors());
 
 const Polls = require('./db/queries/polls');
 const Options = require('./db/queries/options');
@@ -32,6 +34,7 @@ api.get('/polls', async (ctx, next) => {
 api.post('/polls', async (ctx, next) => {
   try {
     const polls = await Polls.create(ctx.request.body);
+    console.log('Polls: ', polls);
     if (polls.length) {
       ctx.status = 201;
       ctx.body = {
@@ -46,6 +49,7 @@ api.post('/polls', async (ctx, next) => {
       };
     }
   } catch (err) {
+    console.error('Error: ', err);
     ctx.status = 400;
     ctx.body = {
       status: 'error',
