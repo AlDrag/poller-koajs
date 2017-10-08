@@ -1,9 +1,9 @@
 
 exports.up = function(knex, Promise) {
     return knex.schema.createTable('options', (table) => {
-        table.increments();
+        table.bigIncrements();
         table.string('description').notNullable();
-        table.integer('poll_id').unsigned().index().references('polls.id');
+        table.bigInteger('poll_id').unsigned().index().references('polls.id');
       });
 };
 

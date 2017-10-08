@@ -31,10 +31,28 @@ api.get('/polls', async (ctx, next) => {
   }
 });
 
+api.get('/polls/:uuid', async (ctx, next) => {
+  try {
+    const polls = await Polls.get(ctx.params.uuid);
+    if (polls.length) {
+      ctx.status = 200;
+      ctx.body = {
+        status: 'success',
+        data: polls
+      }
+    }
+  } catch (err) {
+    ctx.status = 400;
+    ctx.body = {
+      status: 'error',
+      message: 'Something went wrong.'
+    }
+  }
+});
+
 api.post('/polls', async (ctx, next) => {
   try {
     const polls = await Polls.create(ctx.request.body);
-    console.log('Polls: ', polls);
     if (polls.length) {
       ctx.status = 201;
       ctx.body = {

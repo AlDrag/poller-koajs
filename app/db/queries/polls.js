@@ -1,7 +1,14 @@
 const knex = require('../connection');
+const uuidv4 = require('uuid/v4');
 
 function get() {
     return knex('polls')
+        .returning('*');
+}
+
+function getByUUID(uuid) {
+    return knex('polls')
+        .where('uuid', uuid)
         .returning('*');
 }
 
@@ -10,11 +17,10 @@ function get() {
  * @param {title: string, options: string[]} poll 
  */
 function create(poll) {
-    console.log('Poll: ', poll);
     return knex.transaction((t) => {
         return knex("polls")
             .transacting(t)
-            .insert({title: poll.title})
+            .insert({title: poll.title, uuid: uuidv4()})
             .returning('*')
             .then((response) => {
                 const options = poll.options.map((option) => {
@@ -32,5 +38,6 @@ function create(poll) {
 
 module.exports = {
     get,
+    getByUUID,
     create
 }
