@@ -52,12 +52,12 @@ api.get('/polls/:uuid', async (ctx, next) => {
 
 api.post('/polls', async (ctx, next) => {
   try {
-    const polls = await Polls.create(ctx.request.body);
-    if (polls.length) {
+    const poll = await Polls.create(ctx.request.body);
+    if (poll) {
       ctx.status = 201;
       ctx.body = {
         status: 'success',
-        data: polls
+        data: poll
       };
     } else {
       ctx.status = 400;

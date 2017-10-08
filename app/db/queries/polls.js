@@ -22,14 +22,22 @@ function create(poll) {
             .transacting(t)
             .insert({title: poll.title, uuid: uuidv4()})
             .returning('*')
-            .then((response) => {
+            .then((pollsResponse) => {
+                console.log('Polls Response', pollsResponse);
                 const options = poll.options.map((option) => {
-                    return {description: option, poll_id: response.id};
+                    return {description: option, poll_id: pollsResponse[0].id};
                 });
                 return knex('options')
                     .transacting(t)
                     .insert(options)
-                    .returning('*');
+                    .returning('*')
+                    .then((optionsResponse) => {
+                        let response = pollsResponse[0];
+                        console.log('Options Response: ', optionsResponse);
+                        response.options = optionsResponse
+                        console.log('Response: ', response);
+                        return response;
+                    });
             })
             .then(t.commit)
             .catch(t.rollback)
