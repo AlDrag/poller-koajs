@@ -33,7 +33,7 @@ api.get('/polls', async (ctx, next) => {
 
 api.get('/polls/:uuid', async (ctx, next) => {
   try {
-    const polls = await Polls.get(ctx.params.uuid);
+    const polls = await Polls.getByUUID(ctx.params.uuid);
     if (polls.length) {
       ctx.status = 200;
       ctx.body = {
