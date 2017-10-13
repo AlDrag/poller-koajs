@@ -11,6 +11,17 @@ function getByPollID(id) {
         .returning('*');
 }
 
+function getResults(uuid) {
+    return knex('votes')
+        .count('options.id')
+        .innerJoin('polls', function () {
+            this.on('votes.poll_id', '=', 'polls.id').onIn('polls.uuid', [uuid]);
+        })
+        .innerJoin('options', 'options.id', 'votes.option_id')
+        .groupBy('options.id')
+        .select('options.id', 'options.poll_id', 'options.description');
+}
+
 function create(vote) {
     return knex('votes')
         .insert(vote)
@@ -20,5 +31,6 @@ function create(vote) {
 module.exports = {
     get,
     getByPollID,
+    getResults,
     create
 }

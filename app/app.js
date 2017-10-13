@@ -42,6 +42,27 @@ api.get('/polls/:uuid', async (ctx, next) => {
       }
     }
   } catch (err) {
+    console.log('Error: ', err);
+    ctx.status = 400;
+    ctx.body = {
+      status: 'error',
+      message: 'Something went wrong.'
+    }
+  }
+});
+
+api.get('/polls/:uuid/results', async (ctx, next) => {
+  try {
+    const results = await Votes.getResults(ctx.params.uuid);
+    if (results.length) {
+      ctx.status = 200;
+      ctx.body = {
+        status: 'success',
+        data: results
+      }
+    }
+  } catch (err) {
+    console.log('Error: ', err);
     ctx.status = 400;
     ctx.body = {
       status: 'error',
