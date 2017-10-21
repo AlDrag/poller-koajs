@@ -23,7 +23,6 @@ function create(poll) {
             .insert({title: poll.title, uuid: uuidv4()})
             .returning('*')
             .then((pollsResponse) => {
-                console.log('Polls Response', pollsResponse);
                 const options = poll.options.map((option) => {
                     return {description: option, poll_id: pollsResponse[0].id};
                 });
@@ -33,9 +32,7 @@ function create(poll) {
                     .returning('*')
                     .then((optionsResponse) => {
                         let response = pollsResponse[0];
-                        console.log('Options Response: ', optionsResponse);
                         response.options = optionsResponse
-                        console.log('Response: ', response);
                         return response;
                     });
             })
