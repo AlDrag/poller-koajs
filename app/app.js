@@ -196,5 +196,6 @@ app
     .use(api.allowedMethods());
 
 const PORT = process.env.PORT || 3000;
-console.log(`Starting server on port ${PORT}`);
+const ENV = process.env.NODE_ENV || 'development';
+console.log(`Starting server on port ${PORT} with env ${ENV}`);
 app.listen(PORT);
