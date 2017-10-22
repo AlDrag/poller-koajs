@@ -6,7 +6,7 @@ module.exports = {
   development: {
     client: 'postgresql',
     connection: {
-      database: 'postgres://ijynwyewhpuvfl:2eab7d45b93aba0e59586e4b86145600b411da24a3a748aa20f5e0ce2f1f1d4c@ec2-107-21-205-25.compute-1.amazonaws.com:5432/d7kdcphqc1gm4a',
+      database: 'poller_db',
     },
     pool: {
       min: 2,

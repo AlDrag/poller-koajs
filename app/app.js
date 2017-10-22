@@ -6,6 +6,7 @@ const Cors = require('@koa/cors');
 const app = new Koa();
 const api = Router();
 app.use(BodyParser());
+// Limit CORS to safe URLs.
 app.use(Cors());
 
 const Polls = require('./db/queries/polls');
