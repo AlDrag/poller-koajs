@@ -19,6 +19,9 @@
     "start": "node --use-strict ./app/app.js",
     "test": "mocha tests/"
   },
+  "engines": {
+    "node": ">= 8.7.0"
+  },
   "author": "",
   "license": "ISC"
 }
