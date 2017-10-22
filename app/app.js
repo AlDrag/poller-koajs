@@ -23,7 +23,7 @@ api.get('/polls', async (ctx, next) => {
       }
     }
   } catch (err) {
-    console.err(err);
+    console.error(err);
     ctx.status = 400;
     ctx.body = {
       status: 'error',
@@ -43,7 +43,7 @@ api.get('/polls/:uuid', async (ctx, next) => {
       }
     }
   } catch (err) {
-    console.err(err);
+    console.error(err);
     ctx.status = 400;
     ctx.body = {
       status: 'error',
