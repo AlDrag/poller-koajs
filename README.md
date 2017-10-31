@@ -23,3 +23,34 @@ Run following command from parent directory to start the application
    
    For staging/production, use
    > knex migrate:latest --env production
+   
+## Test
+Using postman or a similar tool, post to 
+http://localhost:3000/polls
+
+``` json
+{
+	"title":"Test",
+	"options":["test1"]
+}
+```
+
+Expected response should be a successful poll
+
+```json
+{
+    "status": "success",
+    "data": {
+        "id": "5",
+        "title": "Test",
+        "uuid": "11b6fdb5-e01f-44ba-94cb-4e937f743615",
+        "options": [
+            {
+                "id": "2",
+                "description": "test1",
+                "poll_id": "5"
+            }
+        ]
+    }
+}
+```
