@@ -160,11 +160,22 @@ api.get('/polls/:poll_id/votes', async (ctx, next) => {
   }
 });
 
+/**
+ * Client Vote.
+ */
 api.post('/polls/:poll_id/options/:option_id/votes', async (ctx, next) => {
+  const clientIp = ctx.request.ip;
+  const userAgent = ctx.request.header['user-agent'];
+  
+  const pollID = ctx.params.poll_id;
+  const optionID = ctx.params.option_id;
+  const newVote = Object.assign({}, ctx.request.body, {
+    poll_id: pollID,
+    option_id: optionID,
+    ip_address: clientIp,
+    user_agent: userAgent
+  });
   try {
-    const pollID = ctx.params.poll_id;
-    const optionID = ctx.params.option_id;
-    const newVote = Object.assign({}, ctx.request.body, {poll_id: pollID, option_id: optionID});
     const votes = await Votes.create(newVote);
     if (votes.length) {
       ctx.status = 201;

@@ -25,7 +25,7 @@ function getResults(uuid) {
 function create(vote) {
     return knex('votes')
         .insert(vote)
-        .returning('*');
+        .returning('votes.id');
 }
 
 module.exports = {
