@@ -24,9 +24,7 @@ function getResults(uuid) {
 
 async function hasVoted(pollID, ipAddress, userAgent) {
     const votes = await knex('votes')
-        .where('poll_id', pollID)
-        .where('ip_address', ipAddress)
-        .where('user_agent', userAgent)
+        .where({'poll_id': pollID, 'ip_address': ipAddress})
         .select('votes.id')
 
     return votes.length > 0;
