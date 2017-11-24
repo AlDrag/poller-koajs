@@ -176,6 +176,16 @@ api.post('/polls/:poll_id/options/:option_id/votes', async (ctx, next) => {
     user_agent: userAgent
   });
   try {
+    const hasVoted = await Votes.hasVoted(pollID, clientIp, userAgent)
+    if (hasVoted) {
+      ctx.status = 403;
+      ctx.body = {
+        status: 'error',
+        message: 'User has already voted'
+      }
+      return;
+    }
+
     const votes = await Votes.create(newVote);
     if (votes.length) {
       ctx.status = 201;
