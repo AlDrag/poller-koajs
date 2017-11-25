@@ -8,6 +8,7 @@ cache:
 jobs:
   include:
     - stage: Deployment
+      script: skip
       deploy:
         provider: heroku
         api_key: $HEROKU_API_KEY
