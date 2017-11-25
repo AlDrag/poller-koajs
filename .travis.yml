@@ -4,7 +4,16 @@ node_js:
 cache:
   directories:
   - "node_modules"
-deploy:
-  provider: heroku
-  api_key: $HEROKU_API_KEY
-  app: poller-api
+
+jobs:
+  include:
+    - stage: Deployment
+      deploy:
+        provider: heroku
+          api_key: $HEROKU_API_KEY
+          app: poller-api
+          run: "knex migrate:latest --env production"
+          on:
+            branch: master
+    - stage: Test Deployment
+      script: 'curl https://poller-api.herokuapp.com'
