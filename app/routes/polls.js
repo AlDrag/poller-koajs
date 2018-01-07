@@ -181,7 +181,7 @@ api.post('/polls/:poll_id/options/:option_id/votes', async (ctx, next) => {
       ctx.status = 403;
       ctx.body = {
         status: 'error',
-        message: 'User has already voted'
+        message: 'You have already voted'
       }
       return;
     }
