@@ -17,4 +17,5 @@ jobs:
         on:
           branch: master
     - stage: Test Deployment
+      install: true
       script: 'curl https://poller-api.herokuapp.com'
